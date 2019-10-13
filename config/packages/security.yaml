@@ -18,7 +18,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
+            anonymous: ~
+            logout: ~
+            stateless: true
             guard:
                 authenticators:
                     - App\Security\ApiAuthenticator
