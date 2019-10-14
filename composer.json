@@ -5,14 +5,13 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "gedmo/doctrine-extensions": "^2.4",
         "sensio/framework-extra-bundle": "^5.4",
+        "stof/doctrine-extensions-bundle": "^1.3",
         "symfony/console": "4.3.*",
         "symfony/dotenv": "4.3.*",
         "symfony/flex": "^1.3.1",
         "symfony/form": "4.3.*",
         "symfony/framework-bundle": "4.3.*",
-        "symfony/maker-bundle": "^1.13",
         "symfony/messenger": "4.3.*",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "4.3.*",
@@ -22,6 +21,8 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "symfony/maker-bundle": "^1.13",
+        "hautelook/alice-bundle": "^2.5"
     },
     "config": {
         "preferred-install": {
@@ -64,7 +65,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "4.3.*"
         }
     }

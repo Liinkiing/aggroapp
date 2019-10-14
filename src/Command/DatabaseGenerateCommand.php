@@ -29,7 +29,8 @@ class DatabaseGenerateCommand extends Command
         return [
             'doctrine:database:drop' => ['--force' => true, '--no-interaction' => true],
             'doctrine:database:create' => ['--no-interaction' => true],
-            'doctrine:migrations:migrate' => ['--no-interaction' => true]
+            'doctrine:migrations:migrate' => ['--no-interaction' => true],
+            'hautelook:fixtures:load' => ['--no-interaction' => true]
         ];
     }
 

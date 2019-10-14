@@ -1,0 +1,6 @@
+App\Entity\ApiUser:
+  apiUser:
+    username: aggro
+    plainPassword: lemdpdedev
+    roles: [ROLE_API]
+    apiToken: letokendedev

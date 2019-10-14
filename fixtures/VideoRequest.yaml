@@ -1,0 +1,5 @@
+App\Entity\VideoRequest:
+  dankMemeVideoRequest:
+    tweetUrl: https://twitter.com/FreeMemesKids/status/1180936134328762368
+    requestedBy: \@FromUser
+    processed: false

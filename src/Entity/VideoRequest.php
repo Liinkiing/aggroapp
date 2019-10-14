@@ -29,6 +29,16 @@ class VideoRequest
      */
     private $requestedBy;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $downloadUrl;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $processed = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +64,30 @@ class VideoRequest
     public function setRequestedBy(string $requestedBy): self
     {
         $this->requestedBy = $requestedBy;
+
+        return $this;
+    }
+
+    public function getDownloadUrl(): ?string
+    {
+        return $this->downloadUrl;
+    }
+
+    public function setDownloadUrl(?string $downloadUrl): self
+    {
+        $this->downloadUrl = $downloadUrl;
+
+        return $this;
+    }
+
+    public function getProcessed(): ?bool
+    {
+        return $this->processed;
+    }
+
+    public function setProcessed(bool $processed): self
+    {
+        $this->processed = $processed;
 
         return $this;
     }

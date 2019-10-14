@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ApiUserRepository")
+ * @ORM\EntityListeners({"App\EventListener\UserListener"})
  */
 class ApiUser implements UserInterface
 {
@@ -40,6 +41,11 @@ class ApiUser implements UserInterface
      * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     private $apiToken;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $plainPassword;
 
     public function getId(): ?int
     {
@@ -108,10 +114,9 @@ class ApiUser implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function getApiToken(): ?string
@@ -122,6 +127,18 @@ class ApiUser implements UserInterface
     public function setApiToken(string $apiToken): self
     {
         $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
