@@ -1,4 +1,7 @@
 {
+    "aws/aws-sdk-php": {
+        "version": "3.112.21"
+    },
     "behat/transliterator": {
         "version": "v1.2.0"
     },
@@ -102,6 +105,15 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.37"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.3.3"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
     "hautelook/alice-bundle": {
         "version": "2.1",
         "recipe": {
@@ -122,21 +134,14 @@
     "league/flysystem": {
         "version": "1.0.56"
     },
-    "league/flysystem-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "8ad3ded1f39fedce098e43259741f42092a1010e"
-        },
-        "files": [
-            "./config/packages/flysystem.yaml",
-            "./var/storage/.gitignore"
-        ]
+    "league/flysystem-aws-s3-v3": {
+        "version": "1.0.23"
     },
     "monolog/monolog": {
         "version": "1.25.1"
+    },
+    "mtdowling/jmespath.php": {
+        "version": "2.4.0"
     },
     "myclabs/deep-copy": {
         "version": "1.9.3"
@@ -163,6 +168,18 @@
     "ocramius/proxy-manager": {
         "version": "2.2.3"
     },
+    "oneup/flysystem-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0eb87bba411c227da027fe5f7c1dc7954b02f242"
+        },
+        "files": [
+            "./config/packages/oneup_flysystem.yaml"
+        ]
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
     },
@@ -178,8 +195,14 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "ralouphie/mimey": {
         "version": "2.1.0"

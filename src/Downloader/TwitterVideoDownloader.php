@@ -4,30 +4,39 @@
 namespace App\Downloader;
 
 
+use League\Flysystem\AdapterInterface;
+use League\Flysystem\FilesystemInterface;
 use Mimey\MimeTypes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TwitterVideoDownloader extends BaseDownloader
 {
-    public function __construct(HttpClientInterface $client, MimeTypes $mimes, string $twitterVideosDirectory)
+    private $twitterVideosS3Filesystem;
+
+    public function __construct(HttpClientInterface $client, MimeTypes $mimes, FilesystemInterface $twitterVideosS3Filesystem)
     {
-        parent::__construct($client, $mimes, $twitterVideosDirectory);
+        parent::__construct($client, $mimes);
+        $this->twitterVideosS3Filesystem = $twitterVideosS3Filesystem;
     }
 
     public function download(string $uri): void
     {
         $response = $this->client->request(Request::METHOD_GET, $uri);
 
-        $stream = fopen($this->createFilename(
-            $this->getSaveDir(),
+        $filename = $this->createFilename(
             uniqid('', true),
             $response->getHeaders()['content-type'][0]
-        ), 'wb');
+        );
+        $stream = tmpfile();
 
         foreach ($this->client->stream($response) as $chunk) {
             fwrite($stream, $chunk->getContent());
         }
+
+        $this->twitterVideosS3Filesystem->writeStream($filename, $stream, [
+            'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+        ]);
 
         if (is_resource($stream)) {
             fclose($stream);

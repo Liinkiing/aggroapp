@@ -11,36 +11,21 @@ abstract class BaseDownloader implements DownloaderInterface
 {
     protected $client;
     private $mimes;
-    private $saveDir;
-
-    private function prepare(): void
-    {
-        if (!is_dir($this->saveDir) && !mkdir($this->saveDir, 0755, true) && !is_dir($this->saveDir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $this->saveDir));
-        }
-    }
 
     protected function getFileExtension(string $mimeType): string
     {
         return $this->mimes->getExtension($mimeType);
     }
 
-    public function __construct(HttpClientInterface $client, MimeTypes $mimes, string $saveDir)
+    public function __construct(HttpClientInterface $client, MimeTypes $mimes)
     {
         $this->client = $client;
         $this->mimes = $mimes;
-        $this->saveDir = $saveDir;
-        $this->prepare();
     }
 
-    protected function createFilename(string $baseDir, string $name, string $mimeType): string
+    protected function createFilename(string $name, string $mimeType): string
     {
-        return $baseDir . DIRECTORY_SEPARATOR . $name . '.' . $this->getFileExtension($mimeType);
-    }
-
-    protected function getSaveDir(): string
-    {
-        return $this->saveDir;
+        return $name . '.' . $this->getFileExtension($mimeType);
     }
 
     abstract public function download(string $uri): void;

@@ -6,9 +6,11 @@ use App\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRequestRepository")
+ * @UniqueEntity("tweetUrl")
  */
 class VideoRequest
 {
@@ -25,7 +27,7 @@ class VideoRequest
      * @Groups({"api"})
      * @Assert\NotBlank()
      * @Assert\Url()
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $tweetUrl;
 

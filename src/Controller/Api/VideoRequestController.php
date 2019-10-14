@@ -36,10 +36,14 @@ class VideoRequestController extends ApiController
     /**
      * @Route("/requests", name="api.video_request.index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $tweetUrl = $request->query->get('tweet_url');
+
         return $this->json(
-            $this->repository->findAll()
+            $tweetUrl ?
+                $this->repository->findBy(compact('tweetUrl')) :
+                $this->repository->findAll()
         );
     }
 
