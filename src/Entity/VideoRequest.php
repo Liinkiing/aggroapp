@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Traits\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRequestRepository")
@@ -14,22 +16,28 @@ class VideoRequest
 
     /**
      * @ORM\Id()
+     * @Groups({"api"})
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
+     * @Groups({"api"})
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $tweetUrl;
 
     /**
+     * @Groups({"api"})
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $requestedBy;
 
     /**
+     * @Groups({"api"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $downloadUrl;
