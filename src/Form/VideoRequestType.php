@@ -14,6 +14,7 @@ class VideoRequestType extends AbstractType
         $builder
             ->add('tweetUrl')
             ->add('requestedBy')
+            ->add('replyUrl')
         ;
     }
 

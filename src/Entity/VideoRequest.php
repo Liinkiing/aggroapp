@@ -47,6 +47,12 @@ class VideoRequest
      */
     private $processed = false;
 
+    /**
+     * @Groups({"api"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $replyUrl;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +102,18 @@ class VideoRequest
     public function setProcessed(bool $processed): self
     {
         $this->processed = $processed;
+
+        return $this;
+    }
+
+    public function getReplyUrl(): ?string
+    {
+        return $this->replyUrl;
+    }
+
+    public function setReplyUrl(string $replyUrl): self
+    {
+        $this->replyUrl = $replyUrl;
 
         return $this;
     }
