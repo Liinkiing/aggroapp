@@ -6,6 +6,7 @@ namespace App\Controller\Api;
 use App\Controller\ApiController;
 use App\Entity\VideoRequest;
 use App\Form\VideoRequestType;
+use App\Message\Command\ProcessTwitterVideo;
 use App\Repository\VideoRequestRepository;
 use App\Serializer\FormErrorsSerializer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,11 +24,13 @@ class VideoRequestController extends ApiController
 {
 
     private $repository;
+    private $bus;
 
-    public function __construct(FormErrorsSerializer $formErrorsSerializer, VideoRequestRepository $repository)
+    public function __construct(FormErrorsSerializer $formErrorsSerializer, VideoRequestRepository $repository, MessageBusInterface $bus)
     {
         parent::__construct($formErrorsSerializer);
         $this->repository = $repository;
+        $this->bus = $bus;
     }
 
     /**
@@ -55,6 +59,12 @@ class VideoRequestController extends ApiController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($videoRequest);
             $em->flush();
+
+            $this->bus->dispatch(
+                new ProcessTwitterVideo(
+                    $videoRequest->getId()
+                )
+            );
 
             return $this->json(
                 $videoRequest,

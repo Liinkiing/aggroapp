@@ -14,12 +14,17 @@ class Tweet implements ApiModel
     private $text;
     private $videos;
 
+    public static function extractIdFromUrl(string $url): int
+    {
+        return basename($url);
+    }
+
     public static function fromApi(array $response): self
     {
         return new self(
             $response['id'],
             $response['text'],
-            $response['extended_entities'] && $response['extended_entities']['media']
+            isset($response['extended_entities']['media'])
                 ? array_map(
                 [TwitterVideo::class, 'fromApi'],
                 array_filter($response['extended_entities']['media'], static function (array $media) {

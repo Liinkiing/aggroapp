@@ -33,12 +33,12 @@ abstract class BaseDownloader implements DownloaderInterface
         $this->prepare();
     }
 
-    public function createFilename(string $baseDir, string $name, string $mimeType): string
+    protected function createFilename(string $baseDir, string $name, string $mimeType): string
     {
         return $baseDir . DIRECTORY_SEPARATOR . $name . '.' . $this->getFileExtension($mimeType);
     }
 
-    public function getSaveDir(): string
+    protected function getSaveDir(): string
     {
         return $this->saveDir;
     }

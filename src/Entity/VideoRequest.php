@@ -16,7 +16,6 @@ class VideoRequest
 
     /**
      * @ORM\Id()
-     * @Groups({"api"})
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
@@ -45,6 +44,7 @@ class VideoRequest
     private $downloadUrl;
 
     /**
+     * @Groups({"api"})
      * @ORM\Column(type="boolean")
      */
     private $processed = false;
