@@ -25,6 +25,7 @@ class VideoRequest
     /**
      * @Groups({"api"})
      * @Assert\NotBlank()
+     * @Assert\Url()
      * @ORM\Column(type="string", length=255)
      */
     private $tweetUrl;
@@ -38,6 +39,7 @@ class VideoRequest
 
     /**
      * @Groups({"api"})
+     * @Assert\Url()
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $downloadUrl;
@@ -49,6 +51,8 @@ class VideoRequest
 
     /**
      * @Groups({"api"})
+     * @Assert\NotBlank()
+     * @Assert\Url()
      * @ORM\Column(type="string", length=255)
      */
     private $replyUrl;

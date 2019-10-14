@@ -21,8 +21,9 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.13",
-        "hautelook/alice-bundle": "^2.5"
+        "hautelook/alice-bundle": "^2.5",
+        "symfony/debug-pack": "^1.0",
+        "symfony/maker-bundle": "^1.13"
     },
     "config": {
         "preferred-install": {

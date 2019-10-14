@@ -3,13 +3,13 @@
 
 namespace App\Controller\Api;
 
-
 use App\Controller\ApiController;
 use App\Entity\VideoRequest;
 use App\Form\VideoRequestType;
 use App\Repository\VideoRequestRepository;
 use App\Serializer\FormErrorsSerializer;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +40,7 @@ class VideoRequestController extends ApiController
     }
 
     /**
+     * @IsGranted({"ROLE_API"})
      * @Route("/requests", name="api.video_request.new", methods={"POST"})
      */
     public function new(Request $request, FormFactoryInterface $formFactory, EntityManagerInterface $em): Response
