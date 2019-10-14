@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Traits\Timestampable;
+use App\Traits\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,13 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class VideoRequest
 {
     use Timestampable;
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use UuidTrait;
 
     /**
      * @Groups({"api"})
@@ -40,13 +35,6 @@ class VideoRequest
 
     /**
      * @Groups({"api"})
-     * @Assert\Url()
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $downloadUrl;
-
-    /**
-     * @Groups({"api"})
      * @ORM\Column(type="boolean")
      */
     private $processed = false;
@@ -58,11 +46,6 @@ class VideoRequest
      * @ORM\Column(type="string", length=255)
      */
     private $replyUrl;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getTweetUrl(): ?string
     {
@@ -84,18 +67,6 @@ class VideoRequest
     public function setRequestedBy(string $requestedBy): self
     {
         $this->requestedBy = $requestedBy;
-
-        return $this;
-    }
-
-    public function getDownloadUrl(): ?string
-    {
-        return $this->downloadUrl;
-    }
-
-    public function setDownloadUrl(?string $downloadUrl): self
-    {
-        $this->downloadUrl = $downloadUrl;
 
         return $this;
     }

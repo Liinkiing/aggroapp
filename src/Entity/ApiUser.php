@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Traits\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,12 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ApiUser implements UserInterface
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use UuidTrait;
 
     /**
      * @Assert\NotBlank()
@@ -46,11 +42,6 @@ class ApiUser implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $plainPassword;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
      * A visual identifier that represents this user.
@@ -116,7 +107,7 @@ class ApiUser implements UserInterface
      */
     public function eraseCredentials(): void
     {
-         $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getApiToken(): ?string

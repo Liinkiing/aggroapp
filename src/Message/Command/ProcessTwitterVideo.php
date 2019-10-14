@@ -10,12 +10,12 @@ class ProcessTwitterVideo implements AsyncMessage
 {
     private $requestId;
 
-    public function __construct(int $requestId)
+    public function __construct(string $requestId)
     {
         $this->requestId = $requestId;
     }
 
-    public function getRequestId(): int
+    public function getRequestId(): string
     {
         return $this->requestId;
     }
