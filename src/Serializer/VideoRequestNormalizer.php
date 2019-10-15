@@ -6,6 +6,7 @@ namespace App\Serializer;
 
 use App\Entity\VideoRequest;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -38,10 +39,10 @@ class VideoRequestNormalizer implements ContextAwareNormalizerInterface
             $data['_href'] = [
                 'self' => $this->router->generate('api.video_request.show', [
                     'id' => $videoRequest->getId()
-                ], UrlGeneratorInterface::ABSOLUTE_URL),
+                ], RouterInterface::ABSOLUTE_URL),
                 'download' => $this->router->generate('video_request.download', [
                     'id' => $videoRequest->getId()
-                ], UrlGeneratorInterface::ABSOLUTE_URL)
+                ], RouterInterface::ABSOLUTE_URL)
             ];
         }
 
