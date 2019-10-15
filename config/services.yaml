@@ -45,3 +45,9 @@ services:
                 credentials:
                     key: '%env(string:AWS_S3_ACCESS_ID)%'
                     secret: '%env(string:AWS_S3_ACCESS_SECRET)%'
+    DG\Twitter\Twitter:
+        arguments:
+            - '%env(string:TWITTER_CONSUMER_KEY)%'
+            - '%env(string:TWITTER_CONSUMER_SECRET)%'
+            - '%env(string:TWITTER_ACCESS_TOKEN)%'
+            - '%env(string:TWITTER_ACCESS_TOKEN_SECRET)%'

@@ -5,6 +5,9 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
+    "dg/twitter-php": {
+        "version": "v4.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
