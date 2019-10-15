@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     twitter_videos_directory: '%kernel.project_dir%/var/storage/videos/twitter'
+    router.request_context.host: '%env(string:APP_ROUTER_REQUEST_CONTEXT_HOST)%'
+    router.request_context.scheme: '%env(string:APP_ROUTER_REQUEST_CONTEXT_SCHEME)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
