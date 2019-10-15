@@ -37,7 +37,7 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
     {
         $request = $this->repository->find($message->getRequestId());
 
-        if ($request) {
+        if ($request && !$request->isProcessed()) {
             $tweet = Tweet::fromApi(
                 $this->client->tweet(
                     Tweet::extractIdFromUrl($request->getTweetUrl())
@@ -62,7 +62,7 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
             $this->em->flush();
         } else {
             throw new NotFoundResourceException(
-                sprintf('Could not find VideoRequest with ID "%s"', $requestId)
+                sprintf('Could not find VideoRequest with ID "%s"', $message->getRequestId())
             );
         }
     }
