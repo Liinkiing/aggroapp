@@ -45,11 +45,15 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
             );
 
             if ($tweet->getVideos()->count() > 0) {
-                $this->downloader->download(
-                    $tweet->getVideos()->first()->getUrl()
+                $video = $tweet->getVideos()->first();
+                $filename = $this->downloader->download(
+                    $video->getUrl()
                 );
 
-                $request->setProcessed(true);
+                $request
+                    ->setProcessed(true)
+                    ->setMimeType($video->getMimeType())
+                    ->setFilename($filename);
             } else {
                 // The requested tweet did not have any videos attached, so we can delete the request
                 $this->em->remove($request);

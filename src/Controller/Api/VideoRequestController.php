@@ -48,6 +48,16 @@ class VideoRequestController extends ApiController
     }
 
     /**
+     * @Route("/request/{id}", name="api.video_request.show", methods={"GET"})
+     */
+    public function show(VideoRequest $videoRequest): Response
+    {
+        return $this->json(
+            $videoRequest
+        );
+    }
+
+    /**
      * @IsGranted({"ROLE_API"})
      * @Route("/requests", name="api.video_request.new", methods={"POST"})
      */

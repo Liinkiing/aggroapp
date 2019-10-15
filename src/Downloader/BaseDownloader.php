@@ -28,6 +28,6 @@ abstract class BaseDownloader implements DownloaderInterface
         return $name . '.' . $this->getFileExtension($mimeType);
     }
 
-    abstract public function download(string $uri): void;
+    abstract public function download(string $uri): string;
 
 }

@@ -20,7 +20,7 @@ class TwitterVideoDownloader extends BaseDownloader
         $this->twitterVideosS3Filesystem = $twitterVideosS3Filesystem;
     }
 
-    public function download(string $uri): void
+    public function download(string $uri): string
     {
         $response = $this->client->request(Request::METHOD_GET, $uri);
 
@@ -28,6 +28,7 @@ class TwitterVideoDownloader extends BaseDownloader
             uniqid('', true),
             $response->getHeaders()['content-type'][0]
         );
+
         $stream = tmpfile();
 
         foreach ($this->client->stream($response) as $chunk) {
@@ -41,5 +42,7 @@ class TwitterVideoDownloader extends BaseDownloader
         if (is_resource($stream)) {
             fclose($stream);
         }
+
+        return $filename;
     }
 }

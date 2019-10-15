@@ -12,6 +12,8 @@ class TwitterVideo implements ApiModel
     private $id;
     private $url;
     private $duration;
+    private $bitrate;
+    private $mimeType;
 
     public static function fromApi(array $response): self
     {
@@ -27,15 +29,19 @@ class TwitterVideo implements ApiModel
         return new self(
             $response['id'],
             $bestVariant['url'],
-            $response['video_info']['duration_millis']
+            $response['video_info']['duration_millis'],
+            $bestVariant['bitrate'],
+            $bestVariant['content_type']
         );
     }
 
-    private function __construct(int $id, string $url, int $duration)
+    private function __construct(int $id, string $url, int $duration, int $bitrate, string $mimeType)
     {
         $this->id = $id;
         $this->url = $url;
         $this->duration = $duration;
+        $this->bitrate = $bitrate;
+        $this->mimeType = $mimeType;
     }
 
     public function getId(): int
@@ -52,5 +58,17 @@ class TwitterVideo implements ApiModel
     {
         return $this->duration;
     }
+
+    public function getBitrate(): int
+    {
+        return $this->bitrate;
+    }
+
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
+    }
+
+
 
 }

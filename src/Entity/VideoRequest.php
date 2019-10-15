@@ -47,6 +47,16 @@ class VideoRequest
      */
     private $replyUrl;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $filename;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mimeType;
+
     public function getTweetUrl(): ?string
     {
         return $this->tweetUrl;
@@ -71,7 +81,7 @@ class VideoRequest
         return $this;
     }
 
-    public function getProcessed(): ?bool
+    public function isProcessed(): ?bool
     {
         return $this->processed;
     }
@@ -91,6 +101,30 @@ class VideoRequest
     public function setReplyUrl(string $replyUrl): self
     {
         $this->replyUrl = $replyUrl;
+
+        return $this;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): self
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    public function getMimeType(): ?string
+    {
+        return $this->mimeType;
+    }
+
+    public function setMimeType(?string $mimeType): self
+    {
+        $this->mimeType = $mimeType;
 
         return $this;
     }
