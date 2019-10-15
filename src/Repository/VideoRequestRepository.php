@@ -18,4 +18,27 @@ class VideoRequestRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, VideoRequest::class);
     }
+
+    /**
+     * @return VideoRequest[]
+     */
+    public function findSince(\DateInterval $since): iterable
+    {
+        $qb = $this->createQueryBuilder('vr');
+
+        return $qb
+            ->andWhere(
+                $qb->expr()->between(
+                    'vr.createdAt',
+                    ':since',
+                    ':from'
+                )
+            )
+            ->setParameters([
+                'since' => (new \DateTimeImmutable('now'))->sub($since),
+                'from' => new \DateTimeImmutable('now')
+            ])
+            ->getQuery()
+            ->getResult();
+    }
 }
