@@ -1,0 +1,5 @@
+ready:
+  enthusiast: "Bonsoir mon kheyou, tu m'as aggro pour une vidéo. Du coup tiens chef je l'ai téléchargé pour toi : {downloadUrl}"
+  squared: "Tu sais, moi je suis un bot 🔲, du coup je te l'ai promis, voici ta vidéo : {downloadUrl}"
+  fast: "Tequila, Heinekein, pô l'temps d'niaiser : 🍻 {downloadUrl} 🍻"
+  discret: "Héé pssst ? Tu veux un p'tit ze-dou de vidéos fraîchement téléchargée ? Tiens c'est pour moi : {downloadUrl}"

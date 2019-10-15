@@ -14,9 +14,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProcessTwitterVideoHandler implements MessageHandlerInterface
 {
+    private const AVAILABLE_TWEETS_TEXT = [
+        'ready.enthusiast',
+        'ready.squared',
+        'ready.fast',
+        'ready.discret'
+    ];
 
     private $downloader;
     private $client;
@@ -24,10 +31,12 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
     private $em;
     private $twitterClient;
     private $router;
+    private $translator;
 
     public function __construct(
         TwitterClient $client,
         Twitter $twitterClient,
+        TranslatorInterface $translator,
         RouterInterface $router,
         TwitterVideoDownloader $downloader,
         VideoRequestRepository $repository,
@@ -39,6 +48,7 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
         $this->em = $em;
         $this->twitterClient = $twitterClient;
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public function __invoke(ProcessTwitterVideo $message)
@@ -63,12 +73,12 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
                     ->setMimeType($video->getMimeType())
                     ->setFilename($filename);
 
-                $this->twitterClient->send(sprintf(
-                    'tiens chef ton lien de dl est prêt : %s',
-                    $this->router->generate('video_request.download', [
-                        'id' => $request->getId()
-                    ], RouterInterface::ABSOLUTE_URL)
-                ),
+                $this->twitterClient->send(
+                    $this->translator->trans(self::AVAILABLE_TWEETS_TEXT[array_rand(self::AVAILABLE_TWEETS_TEXT)], [
+                        '{downloadUrl}' => $this->router->generate('video_request.download', [
+                            'id' => $request->getId()
+                        ], RouterInterface::ABSOLUTE_URL)
+                    ], 'tweets'),
                     null,
                     [
                         'in_reply_to_status_id' => Tweet::extractIdFromUrl($request->getReplyUrl()),
