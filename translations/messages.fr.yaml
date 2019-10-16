@@ -1,2 +1,6 @@
 error.auth_needed: Authentication requise.
 error.invalid_credentials: Identifiants invalides.
+
+not_found_page:
+  content: On dirait bien que tu t'es perdu mon kheyou...
+  close: Retourne sur twitter
