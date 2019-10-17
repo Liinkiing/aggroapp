@@ -51,17 +51,16 @@ class CleanStorageCommand extends Command
         foreach ($toDelete as $request) {
             try {
                 $this->em->remove($request);
-                $this->twitterVideosS3Filesystem->delete($request->getFilename());
+                if ($request->getVideo()) {
+                    $this->twitterVideosS3Filesystem->delete($request->getVideo()->getPath());
+                }
             } catch (FileNotFoundException $e) {
-                $io->error(
+                $io->warning(
                     sprintf(
-                        'File "%s" not found. Rollbacking changes to db...',
-                        $request->getFilename()
+                        'File "%s" not found in storage.',
+                        $request->getVideo()->getPath()
                     )
                 );
-                $this->em->rollback();
-
-                return 1;
             } finally {
                 $this->em->flush();
             }
