@@ -4,6 +4,7 @@
 namespace App\Downloader;
 
 
+use App\Entity\Video;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use Mimey\MimeTypes;
@@ -35,7 +36,7 @@ class TwitterVideoDownloader extends BaseDownloader
             fwrite($stream, $chunk->getContent());
         }
 
-        $this->twitterVideosS3Filesystem->writeStream($filename, $stream, [
+        $this->twitterVideosS3Filesystem->writeStream(Video::VIDEO_STORAGE_DIR . $filename, $stream, [
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC
         ]);
 

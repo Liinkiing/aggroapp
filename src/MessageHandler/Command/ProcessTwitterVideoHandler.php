@@ -6,6 +6,7 @@ namespace App\MessageHandler\Command;
 
 use App\Client\TwitterClient;
 use App\Downloader\TwitterVideoDownloader;
+use App\Entity\Video;
 use App\Message\Command\ProcessTwitterVideo;
 use App\Model\Tweet;
 use App\Repository\VideoRequestRepository;
@@ -68,10 +69,13 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
                     $video->getUrl()
                 );
 
+                $video = (new Video())
+                    ->setFilename($filename)
+                    ->setMimeType($video->getMimeType());
+
                 $request
-                    ->setProcessed(true)
-                    ->setMimeType($video->getMimeType())
-                    ->setFilename($filename);
+                    ->setVideo($video)
+                    ->setProcessed(true);
 
                 $this->twitterClient->send(
                     $this->translator->trans(self::AVAILABLE_TWEETS_TEXT[array_rand(self::AVAILABLE_TWEETS_TEXT)], [

@@ -21,16 +21,16 @@ class VideoController extends AbstractController
      */
     public function download(VideoRequest $videoRequest, S3Client $client, string $twitterVideosS3BucketName): Response
     {
-        if ($videoRequest->isProcessed()) {
+        if ($videoRequest->isProcessed() && $videoRequest->getVideo()) {
             $disposition = HeaderUtils::makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                $videoRequest->getFilename()
+                $videoRequest->getVideo()->getFilename()
             );
 
             $command = $client->getCommand('GetObject', [
                 'Bucket' => $twitterVideosS3BucketName,
-                'Key' => $videoRequest->getFilename(),
-                'ResponseContentType' => $videoRequest->getMimeType(),
+                'Key' => $videoRequest->getVideo()->getPath(),
+                'ResponseContentType' => $videoRequest->getVideo()->getMimeType(),
                 'ResponseContentDisposition' => $disposition,
             ]);
 

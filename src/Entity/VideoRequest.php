@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class VideoRequest
 {
+
     use Timestampable;
     use UuidTrait;
 
@@ -48,14 +49,9 @@ class VideoRequest
     private $replyUrl;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Video", mappedBy="request", cascade={"persist", "remove"})
      */
-    private $filename;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mimeType;
+    private $video;
 
     public function getTweetUrl(): ?string
     {
@@ -105,27 +101,21 @@ class VideoRequest
         return $this;
     }
 
-    public function getFilename(): ?string
+    public function getVideo(): ?Video
     {
-        return $this->filename;
+        return $this->video;
     }
 
-    public function setFilename(?string $filename): self
+    public function setVideo(Video $video): self
     {
-        $this->filename = $filename;
+        $this->video = $video;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $video->getRequest()) {
+            $video->setRequest($this);
+        }
 
         return $this;
     }
 
-    public function getMimeType(): ?string
-    {
-        return $this->mimeType;
-    }
-
-    public function setMimeType(?string $mimeType): self
-    {
-        $this->mimeType = $mimeType;
-
-        return $this;
-    }
 }

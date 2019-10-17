@@ -4,5 +4,4 @@ App\Entity\VideoRequest:
     requestedBy: '\@FromUser'
     replyUrl: 'https://twitter.com/xXNightSenseiXx/status/1180963914252726273'
     processed: true
-    filename: 'dankMemeVideo.mp4'
-    mimeType: 'video/mp4'
+    video: '@dankMemeVideo'

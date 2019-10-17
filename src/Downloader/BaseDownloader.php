@@ -23,9 +23,9 @@ abstract class BaseDownloader implements DownloaderInterface
         $this->mimes = $mimes;
     }
 
-    protected function createFilename(string $name, string $mimeType): string
+    protected function createFilename(string $name, string $mimeType, ?string $directory = null): string
     {
-        return $name . '.' . $this->getFileExtension($mimeType);
+        return ($directory ?? '') . $name . '.' . $this->getFileExtension($mimeType);
     }
 
     abstract public function download(string $uri): string;
