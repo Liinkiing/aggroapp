@@ -4,13 +4,13 @@
 namespace App\Serializer;
 
 
-use App\Entity\VideoRequest;
+use App\Entity\Video;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class VideoRequestNormalizer implements ContextAwareNormalizerInterface
+class VideoNormalizer implements ContextAwareNormalizerInterface
 {
 
     private $router;
@@ -24,21 +24,21 @@ class VideoRequestNormalizer implements ContextAwareNormalizerInterface
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return $data instanceof VideoRequest;
+        return $data instanceof Video;
     }
 
-    public function normalize($videoRequest, $format = null, array $context = [])
+    public function normalize($video, $format = null, array $context = [])
     {
-        /** @var VideoRequest $videoRequest */
-        $data = $this->normalizer->normalize($videoRequest, $format, $context);
+        /** @var Video $video */
+        $data = $this->normalizer->normalize($video, $format, $context);
 
         $groups =
             isset($context['groups']) && \is_array($context['groups']) ? $context['groups'] : [];
 
         if (\in_array('api', $groups, true)) {
             $data['_href'] = [
-                'self' => $this->router->generate('api.video_request.show', [
-                    'id' => $videoRequest->getId()
+                'download' => $this->router->generate('video.download', [
+                    'id' => $video->getId()
                 ], RouterInterface::ABSOLUTE_URL)
             ];
         }

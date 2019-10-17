@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Traits\Timestampable;
 use App\Traits\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
@@ -18,16 +19,19 @@ class Video
     use UuidTrait;
 
     /**
+     * @Groups({"api"})
      * @ORM\Column(type="string", length=255)
      */
     private $filename;
 
     /**
+     * @Groups({"api"})
      * @ORM\Column(type="string", length=255)
      */
     private $mimeType;
 
     /**
+     * @Groups({"api"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $thumbnailUrl;
@@ -37,11 +41,6 @@ class Video
      * @ORM\JoinColumn(nullable=false)
      */
     private $request;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getFilename(): ?string
     {
@@ -67,6 +66,9 @@ class Video
         return $this;
     }
 
+    /**
+     * @Groups({"api"})
+     */
     public function getPath(): ?string
     {
         return (self::VIDEO_STORAGE_DIR ?? '') . $this->filename;

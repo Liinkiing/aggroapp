@@ -49,6 +49,7 @@ class VideoRequest
     private $replyUrl;
 
     /**
+     * @Groups({"api"})
      * @ORM\OneToOne(targetEntity="App\Entity\Video", mappedBy="request", cascade={"persist", "remove"})
      */
     private $video;

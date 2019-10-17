@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\Entity\VideoRequest;
+use App\Entity\Video;
 use Aws\S3\S3Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -17,20 +17,20 @@ class VideoController extends AbstractController
 {
 
     /**
-     * @Route("/video/{id}/download", name="video_request.download", methods={"GET"})
+     * @Route("/video/{id}/download", name="video.download", methods={"GET"})
      */
-    public function download(VideoRequest $videoRequest, S3Client $client, string $twitterVideosS3BucketName): Response
+    public function download(Video $video, S3Client $client, string $twitterVideosS3BucketName): Response
     {
-        if ($videoRequest->isProcessed() && $videoRequest->getVideo()) {
+        if ($video->getPath() && $video->getFilename() && $video->getMimeType()) {
             $disposition = HeaderUtils::makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                $videoRequest->getVideo()->getFilename()
+                $video->getFilename()
             );
 
             $command = $client->getCommand('GetObject', [
                 'Bucket' => $twitterVideosS3BucketName,
-                'Key' => $videoRequest->getVideo()->getPath(),
-                'ResponseContentType' => $videoRequest->getVideo()->getMimeType(),
+                'Key' => $video->getPath(),
+                'ResponseContentType' => $video->getMimeType(),
                 'ResponseContentDisposition' => $disposition,
             ]);
 
