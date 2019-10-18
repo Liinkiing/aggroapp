@@ -1,0 +1,26 @@
+{
+    "devDependencies": {
+        "@babel/preset-react": "^7.0.0",
+        "@symfony/webpack-encore": "^0.28.0",
+        "core-js": "^3.0.0",
+        "fork-ts-checker-webpack-plugin": "^0.4.1",
+        "regenerator-runtime": "^0.13.2",
+        "ts-loader": "^5.3.0",
+        "typescript": "^3.6.4",
+        "webpack-notifier": "^1.6.0"
+    },
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@types/react": "^16.9.9",
+        "@types/react-dom": "^16.9.2",
+        "react": "^16.10.2",
+        "react-dom": "npm:@hot-loader/react-dom",
+        "react-on-rails": "^11.3.0"
+    }
+}
