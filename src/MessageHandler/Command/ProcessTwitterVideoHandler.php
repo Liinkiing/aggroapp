@@ -86,10 +86,12 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
                     ->setVideo($video)
                     ->setProcessed(true);
 
+                $this->em->flush();
+
                 $this->twitterClient->send(
                     $this->translator->trans(self::AVAILABLE_TWEETS_TEXT[array_rand(self::AVAILABLE_TWEETS_TEXT)], [
                         '{downloadUrl}' => $this->router->generate('video.download', [
-                            'id' => $request->getId()
+                            'id' => $request->getVideo()->getId()
                         ], RouterInterface::ABSOLUTE_URL)
                     ], 'tweets'),
                     null,
@@ -99,7 +101,6 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
                     ]
                 );
 
-                $this->em->flush();
             } else {
                 // The requested tweet did not have any videos attached, so we can delete the request
                 $this->em->remove($request);
