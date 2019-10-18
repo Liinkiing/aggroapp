@@ -1,4 +1,7 @@
 {
+    "alchemy/binary-driver": {
+        "version": "5.1.0"
+    },
     "aws/aws-sdk-php": {
         "version": "3.112.21"
     },
@@ -102,6 +105,9 @@
             "./config/packages/dev/easy_log_handler.yaml"
         ]
     },
+    "evenement/evenement": {
+        "version": "v2.1.0"
+    },
     "fzaninotto/faker": {
         "version": "v1.8.0"
     },
@@ -174,6 +180,9 @@
             "./config/packages/nelmio_cors.yaml"
         ]
     },
+    "neutron/temporary-filesystem": {
+        "version": "2.3.0"
+    },
     "nikic/php-parser": {
         "version": "v4.2.4"
     },
@@ -194,6 +203,9 @@
         "files": [
             "./config/packages/oneup_flysystem.yaml"
         ]
+    },
+    "php-ffmpeg/php-ffmpeg": {
+        "version": "v0.14"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
@@ -447,6 +459,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.12.0"
+    },
+    "symfony/process": {
+        "version": "v4.3.5"
     },
     "symfony/profiler-pack": {
         "version": "v1.0.4"

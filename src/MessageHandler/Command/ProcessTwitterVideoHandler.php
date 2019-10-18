@@ -9,6 +9,7 @@ use App\Downloader\TwitterVideoDownloader;
 use App\Entity\Video;
 use App\Message\Command\ProcessTwitterVideo;
 use App\Model\Tweet;
+use App\Processor\VideoThumbnailProcessor;
 use App\Repository\VideoRequestRepository;
 use DG\Twitter\Twitter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,12 +34,14 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
     private $twitterClient;
     private $router;
     private $translator;
+    private $thumbnailProcessor;
 
     public function __construct(
         TwitterClient $client,
         Twitter $twitterClient,
         TranslatorInterface $translator,
         RouterInterface $router,
+        VideoThumbnailProcessor $thumbnailProcessor,
         TwitterVideoDownloader $downloader,
         VideoRequestRepository $repository,
         EntityManagerInterface $em
@@ -50,6 +53,7 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
         $this->twitterClient = $twitterClient;
         $this->router = $router;
         $this->translator = $translator;
+        $this->thumbnailProcessor = $thumbnailProcessor;
     }
 
     public function __invoke(ProcessTwitterVideo $message)
@@ -64,14 +68,19 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
             );
 
             if ($tweet->getVideos()->count() > 0) {
-                $video = $tweet->getVideos()->first();
+                $twitterVideo = $tweet->getVideos()->first();
                 $filename = $this->downloader->download(
-                    $video->getUrl()
+                    $twitterVideo->getUrl()
                 );
 
                 $video = (new Video())
                     ->setFilename($filename)
-                    ->setMimeType($video->getMimeType());
+                    ->setMimeType($twitterVideo->getMimeType());
+
+                $thumbnail = $this->thumbnailProcessor->generate($video);
+
+                $video
+                    ->setThumbnail($thumbnail);
 
                 $request
                     ->setVideo($video)
@@ -79,7 +88,7 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
 
                 $this->twitterClient->send(
                     $this->translator->trans(self::AVAILABLE_TWEETS_TEXT[array_rand(self::AVAILABLE_TWEETS_TEXT)], [
-                        '{downloadUrl}' => $this->router->generate('video_request.download', [
+                        '{downloadUrl}' => $this->router->generate('video.download', [
                             'id' => $request->getId()
                         ], RouterInterface::ABSOLUTE_URL)
                     ], 'tweets'),

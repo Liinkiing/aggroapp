@@ -1,15 +1,15 @@
 # Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle/tree/master/Resources/doc/index.md
 oneup_flysystem:
     adapters:
-        twitter_videos_local_adapter:
+        local_adapter:
             local:
-                directory: '%twitter_videos_directory%'
-        twitter_videos_s3_adapter:
+                directory: '%storage_directory%'
+        s3_adapter:
             awss3v3:
                 client: Aws\S3\S3Client
                 bucket: '%env(string:AWS_S3_BUCKET)%'
     filesystems:
-        twitter_videos_local_filesystem:
-            adapter: twitter_videos_local_adapter
-        twitter_videos_s3_filesystem:
-            adapter: twitter_videos_s3_adapter
+        local_filesystem:
+            adapter: local_adapter
+        s3_filesystem:
+            adapter: s3_adapter

@@ -13,12 +13,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TwitterVideoDownloader extends BaseDownloader
 {
-    private $twitterVideosS3Filesystem;
+    private $s3Filesystem;
 
-    public function __construct(HttpClientInterface $client, MimeTypes $mimes, FilesystemInterface $twitterVideosS3Filesystem)
+    public function __construct(HttpClientInterface $client, MimeTypes $mimes, FilesystemInterface $s3Filesystem)
     {
         parent::__construct($client, $mimes);
-        $this->twitterVideosS3Filesystem = $twitterVideosS3Filesystem;
+        $this->s3Filesystem = $s3Filesystem;
     }
 
     public function download(string $uri): string
@@ -36,7 +36,7 @@ class TwitterVideoDownloader extends BaseDownloader
             fwrite($stream, $chunk->getContent());
         }
 
-        $this->twitterVideosS3Filesystem->writeStream(Video::VIDEO_STORAGE_DIR . $filename, $stream, [
+        $this->s3Filesystem->writeStream(Video::VIDEO_STORAGE_DIR . $filename, $stream, [
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC
         ]);
 

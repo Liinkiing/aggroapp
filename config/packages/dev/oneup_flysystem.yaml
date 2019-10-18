@@ -1,0 +1,4 @@
+oneup_flysystem:
+    filesystems:
+        s3_filesystem:
+            adapter: local_adapter

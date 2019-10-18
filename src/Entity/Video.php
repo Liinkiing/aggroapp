@@ -34,7 +34,7 @@ class Video
      * @Groups({"api"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $thumbnailUrl;
+    private $thumbnail;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\VideoRequest", inversedBy="video", cascade={"persist", "remove"})
@@ -66,22 +66,24 @@ class Video
         return $this;
     }
 
-    /**
-     * @Groups({"api"})
-     */
     public function getPath(): ?string
     {
         return (self::VIDEO_STORAGE_DIR ?? '') . $this->filename;
     }
 
-    public function getThumbnailUrl(): ?string
+    public function getThumbnailPath(): ?string
     {
-        return $this->thumbnailUrl;
+        return (self::THUMBNAIL_STORAGE_DIR ?? '') . $this->thumbnail;
     }
 
-    public function setThumbnailUrl(?string $thumbnailUrl): self
+    public function getThumbnail(): ?string
     {
-        $this->thumbnailUrl = $thumbnailUrl;
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
 
         return $this;
     }

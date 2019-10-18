@@ -19,14 +19,14 @@ class CleanStorageCommand extends Command
     protected static $defaultName = 'app:clean-storage';
 
     private $repository;
-    private $twitterVideosS3Filesystem;
+    private $s3Filesystem;
     private $em;
 
-    public function __construct(VideoRequestRepository $repository, FilesystemInterface $twitterVideosS3Filesystem, EntityManagerInterface $em)
+    public function __construct(VideoRequestRepository $repository, FilesystemInterface $s3Filesystem, EntityManagerInterface $em)
     {
         parent::__construct();
         $this->repository = $repository;
-        $this->twitterVideosS3Filesystem = $twitterVideosS3Filesystem;
+        $this->s3Filesystem = $s3Filesystem;
         $this->em = $em;
     }
 
@@ -52,7 +52,7 @@ class CleanStorageCommand extends Command
             try {
                 $this->em->remove($request);
                 if ($request->getVideo()) {
-                    $this->twitterVideosS3Filesystem->delete($request->getVideo()->getPath());
+                    $this->s3Filesystem->delete($request->getVideo()->getPath());
                 }
             } catch (FileNotFoundException $e) {
                 $io->warning(
