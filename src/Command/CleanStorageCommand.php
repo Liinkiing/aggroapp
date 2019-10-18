@@ -54,6 +54,9 @@ class CleanStorageCommand extends Command
                 if ($request->getVideo()) {
                     $this->s3Filesystem->delete($request->getVideo()->getPath());
                 }
+                if ($request->getVideo()->getThumbnail()) {
+                    $this->s3Filesystem->delete($request->getVideo()->getThumbnailPath());
+                }
             } catch (FileNotFoundException $e) {
                 $io->warning(
                     sprintf(

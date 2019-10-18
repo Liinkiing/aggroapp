@@ -9,6 +9,7 @@ use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
 use FFMpeg\Media\Audio;
 use FFMpeg\Media\Frame;
+use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 
 class VideoThumbnailProcessor
@@ -41,7 +42,10 @@ class VideoThumbnailProcessor
         rewind($tmpImage);
         $this->s3Filesystem->putStream(
             Video::THUMBNAIL_STORAGE_DIR . $filename,
-            $tmpImage
+            $tmpImage,
+            [
+                'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+            ]
         );
         if (is_resource($tmpVideo)) {
             fclose($tmpVideo);
