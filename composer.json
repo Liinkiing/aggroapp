@@ -63,6 +63,13 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
+        "heroku:deploy": "git push heroku master",
+        "heroku:stop:web": "heroku ps:scale web=0",
+        "heroku:stop:worker": "heroku ps:scale worker=0",
+        "heroku:stop:all": "composer run heroku:stop:web && composer run heroku:stop:web",
+        "heroku:start:web": "heroku ps:scale web=1",
+        "heroku:start:worker": "heroku ps:scale worker=1",
+        "heroku:start:all": "composer run heroku:start:web && composer run heroku:start:web",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
