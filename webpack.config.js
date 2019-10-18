@@ -47,7 +47,9 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     // enables @babel/preset-env polyfills
-    .configureBabel(() => {}, {
+    .configureBabel(babel => {
+        babel.plugins.push('styled-components')
+    }, {
         useBuiltIns: 'usage',
         corejs: 3
     })
