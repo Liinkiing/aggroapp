@@ -5,12 +5,14 @@ namespace App\Processor;
 
 
 use App\Entity\Video;
+use App\Entity\VideoThumbnail;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
 use FFMpeg\Media\Audio;
 use FFMpeg\Media\Frame;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 
 class VideoThumbnailProcessor
 {
@@ -18,44 +20,55 @@ class VideoThumbnailProcessor
 
     private $FFMpeg;
     private $s3Filesystem;
+    private $logger;
 
-    public function __construct(FFMpeg $FFMpeg, FilesystemInterface $s3Filesystem)
+    public function __construct(FFMpeg $FFMpeg, FilesystemInterface $s3Filesystem, LoggerInterface $logger)
     {
         $this->FFMpeg = $FFMpeg;
         $this->s3Filesystem = $s3Filesystem;
+        $this->logger = $logger;
     }
 
-    public function generate(Video $file): string
+    public function generate(Video $file): ?VideoThumbnail
     {
-        $tmpVideo = tmpfile();
-        $tmpImageFilename = @tempnam('/tmp', '');
-        fwrite($tmpVideo, stream_get_contents($this->s3Filesystem->readStream($file->getPath())));
+        try {
+            $tmpVideo = tmpfile();
+            $tmpImageFilename = @tempnam('/tmp', '');
+            fwrite($tmpVideo, stream_get_contents($this->s3Filesystem->readStream($file->getPath())));
 
-        $tmpVideoUri = stream_get_meta_data($tmpVideo)['uri'];
+            $tmpVideoUri = stream_get_meta_data($tmpVideo)['uri'];
 
-        $video = $this->FFMpeg->open($tmpVideoUri);
-        $thumbnail = $this->createThumbnail($video);
-        $thumbnail->save($tmpImageFilename);
+            $video = $this->FFMpeg->open($tmpVideoUri);
+            $thumbnail = $this->createThumbnail($video);
+            $thumbnail->save($tmpImageFilename);
 
-        $filename = $this->createFilename($file);
-        $tmpImage = fopen($tmpImageFilename, 'rb+');
-        rewind($tmpImage);
-        $this->s3Filesystem->putStream(
-            Video::THUMBNAIL_STORAGE_DIR . $filename,
-            $tmpImage,
-            [
-                'visibility' => AdapterInterface::VISIBILITY_PUBLIC
-            ]
-        );
-        if (is_resource($tmpVideo)) {
-            fclose($tmpVideo);
+            $filename = $this->createFilename($file);
+            $tmpImage = fopen($tmpImageFilename, 'rb+');
+            rewind($tmpImage);
+            $this->s3Filesystem->putStream(
+                VideoThumbnail::STORAGE_DIR . $filename,
+                $tmpImage,
+                [
+                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+                ]
+            );
+            if (is_resource($tmpVideo)) {
+                fclose($tmpVideo);
+            }
+            if (is_resource($tmpImage)) {
+                fclose($tmpImage);
+            }
+            @unlink($tmpImageFilename);
+
+            return (new VideoThumbnail())
+                ->setFilename($filename)
+                ->setMimeType('image/jpeg')
+                ;
+        } catch (\Exception $ex) {
+            $this->logger->error($ex->getMessage());
+
+            return null;
         }
-        if (is_resource($tmpImage)) {
-            fclose($tmpImage);
-        }
-        @unlink($tmpImageFilename);
-
-        return $filename;
     }
 
     private function createFilename(Video $file): string

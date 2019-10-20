@@ -77,10 +77,10 @@ class ProcessTwitterVideoHandler implements MessageHandlerInterface
                     ->setFilename($filename)
                     ->setMimeType($twitterVideo->getMimeType());
 
-                $thumbnail = $this->thumbnailProcessor->generate($video);
-
-                $video
-                    ->setThumbnail($thumbnail);
+                if ($thumbnail = $this->thumbnailProcessor->generate($video)) {
+                    $video
+                        ->setThumbnail($thumbnail);
+                }
 
                 $request
                     ->setVideo($video)

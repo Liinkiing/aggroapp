@@ -43,7 +43,7 @@ class TwitterVideoDownloader extends BaseDownloader
             $filename
         );
 
-        $this->s3Filesystem->putStream(Video::VIDEO_STORAGE_DIR . $filename, $stream, [
+        $this->s3Filesystem->putStream(Video::STORAGE_DIR . $filename, $stream, [
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
             'ContentDisposition' => $disposition
         ]);

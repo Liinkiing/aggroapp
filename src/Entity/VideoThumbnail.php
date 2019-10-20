@@ -10,9 +10,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
  */
-class Video
+class VideoThumbnail
 {
-    public const STORAGE_DIR = 'videos/';
+    public const STORAGE_DIR = 'thumbnails/';
 
     use Timestampable;
     use UuidTrait;
@@ -28,18 +28,6 @@ class Video
      * @ORM\Column(type="string", length=255)
      */
     private $mimeType;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\VideoRequest", inversedBy="video", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $request;
-
-    /**
-     * @Groups({"api"})
-     * @ORM\OneToOne(targetEntity="App\Entity\VideoThumbnail", cascade={"persist", "remove"})
-     */
-    private $thumbnail;
 
     public function getFilename(): ?string
     {
@@ -68,29 +56,5 @@ class Video
     public function getPath(): ?string
     {
         return $this->filename ? (self::STORAGE_DIR ?? '') . $this->filename : null;
-    }
-
-    public function getRequest(): ?VideoRequest
-    {
-        return $this->request;
-    }
-
-    public function setRequest(VideoRequest $request): self
-    {
-        $this->request = $request;
-
-        return $this;
-    }
-
-    public function getThumbnail(): ?VideoThumbnail
-    {
-        return $this->thumbnail;
-    }
-
-    public function setThumbnail(?VideoThumbnail $thumbnail): self
-    {
-        $this->thumbnail = $thumbnail;
-
-        return $this;
     }
 }
