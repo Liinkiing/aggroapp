@@ -11,6 +11,7 @@
     },
     "private": true,
     "scripts": {
+        "postinstall": "yarn build",
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
