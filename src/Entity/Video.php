@@ -68,12 +68,12 @@ class Video
 
     public function getPath(): ?string
     {
-        return (self::VIDEO_STORAGE_DIR ?? '') . $this->filename;
+        return $this->filename ? (self::VIDEO_STORAGE_DIR ?? '') . $this->filename : null;
     }
 
     public function getThumbnailPath(): ?string
     {
-        return (self::THUMBNAIL_STORAGE_DIR ?? '') . $this->thumbnail;
+        return $this->thumbnail ? (self::THUMBNAIL_STORAGE_DIR ?? '') . $this->thumbnail : null;
     }
 
     public function getThumbnail(): ?string

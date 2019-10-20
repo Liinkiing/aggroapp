@@ -4,9 +4,14 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # Default values for env environments
+    env(ASSETS_CDN): ~
+
     storage_directory: '%kernel.project_dir%/var/storage'
+    assets_cdn: '%env(string:ASSETS_CDN)%'
     router.request_context.host: '%env(string:APP_ROUTER_REQUEST_CONTEXT_HOST)%'
     router.request_context.scheme: '%env(string:APP_ROUTER_REQUEST_CONTEXT_SCHEME)%'
+
 
 services:
     # default configuration for services in *this* file
@@ -14,7 +19,8 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            string $twitterVideosS3BucketName: '%env(string:AWS_S3_BUCKET)%'
+            string $s3BucketName: '%env(string:AWS_S3_BUCKET)%'
+            string $assetsCdn: '%assets_cdn%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -57,3 +63,4 @@ services:
     FFMpeg\FFMpeg:
         factory: ['FFMpeg\FFMpeg', 'create']
 
+    Symfony\Component\Asset\Context\RequestStackContext: '@assets.context'

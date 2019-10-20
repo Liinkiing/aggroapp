@@ -1,4 +1,5 @@
 App\Entity\Video:
   dankMemeVideo:
     filename: 'dankMemeVideo.mp4'
+    thumbnail: 'dankMemeVideo.jpg'
     mimeType: 'video/mp4'

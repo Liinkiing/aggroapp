@@ -8,7 +8,9 @@ use App\Entity\Video;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use Mimey\MimeTypes;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TwitterVideoDownloader extends BaseDownloader
@@ -36,8 +38,14 @@ class TwitterVideoDownloader extends BaseDownloader
             fwrite($stream, $chunk->getContent());
         }
 
-        $this->s3Filesystem->writeStream(Video::VIDEO_STORAGE_DIR . $filename, $stream, [
-            'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+        $disposition = HeaderUtils::makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        $this->s3Filesystem->putStream(Video::VIDEO_STORAGE_DIR . $filename, $stream, [
+            'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
+            'ContentDisposition' => $disposition
         ]);
 
         if (is_resource($stream)) {

@@ -19,7 +19,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/video/{id}/download", name="video.download", methods={"GET"})
      */
-    public function download(Video $video, S3Client $client, string $twitterVideosS3BucketName): Response
+    public function download(Video $video, S3Client $client, string $s3BucketName, ?string $assetsCdn = null): Response
     {
         if ($video->getPath() && $video->getFilename() && $video->getMimeType()) {
             $disposition = HeaderUtils::makeDisposition(
@@ -28,15 +28,18 @@ class VideoController extends AbstractController
             );
 
             $command = $client->getCommand('GetObject', [
-                'Bucket' => $twitterVideosS3BucketName,
+                'Bucket' => $s3BucketName,
                 'Key' => $video->getPath(),
                 'ResponseContentType' => $video->getMimeType(),
                 'ResponseContentDisposition' => $disposition,
             ]);
 
             $request = $client->createPresignedRequest($command, '+1 hour');
-
-            return new RedirectResponse((string) $request->getUri());
+            return new RedirectResponse(
+                $assetsCdn ?
+                    $assetsCdn . $request->getRequestTarget() :
+                    (string)$request->getUri()
+            );
         }
 
         throw $this->createNotFoundException();
