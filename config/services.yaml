@@ -64,3 +64,5 @@ services:
         factory: ['FFMpeg\FFMpeg', 'create']
 
     Symfony\Component\Asset\Context\RequestStackContext: '@assets.context'
+
+    Predis\ClientInterface: '@snc_redis.default'
