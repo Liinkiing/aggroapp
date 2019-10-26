@@ -4,6 +4,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import Route from './components/Route'
 import HomeView from './views/HomeView'
 import AboutView from './views/AboutView'
+import NotFoundView from './views/NotFoundView';
 
 const FramerRouter: React.FC = ({children}) => (
     <Location>
@@ -39,6 +40,7 @@ const App: React.FC = () => (
         <FramerRouter>
             <Route component={HomeView} path="/"/>
             <Route component={AboutView} path="/about"/>
+            <Route component={NotFoundView} default/>
         </FramerRouter>
     </div>
 )

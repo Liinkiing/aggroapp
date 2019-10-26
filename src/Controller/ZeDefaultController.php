@@ -19,7 +19,7 @@ class ZeDefaultController extends AbstractController
      *     name="homepage",
      *     defaults={"reactRouting": null},
      *     requirements={
-     *          "reactRouting"="^((?!favicon.ico).)*$"
+     *          "reactRouting"="^((?!(favicon.ico|translations)).)*$"
      *     }
      *     )
      */
