@@ -10,7 +10,9 @@ use App\Message\Command\ProcessTwitterVideo;
 use App\Repository\VideoRequestRepository;
 use App\Serializer\FormErrorsSerializer;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +37,20 @@ class VideoRequestController extends ApiController
 
     /**
      * @Route("/requests", name="api.video_request.index", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the video requests that has been made",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=VideoRequest::class, groups={"api"}))
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="tweet_url",
+     *     in="query",
+     *     type="string",
+     *     description="The field used for filtering by tweet url"
+     * )
      */
     public function index(Request $request): Response
     {
@@ -48,6 +64,11 @@ class VideoRequestController extends ApiController
     }
 
     /**
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns a video request",
+     *     @Model(type=VideoRequest::class, groups={"api"})
+     * )
      * @Route("/request/{id}", name="api.video_request.show", methods={"GET"})
      */
     public function show(VideoRequest $videoRequest): Response
@@ -59,6 +80,17 @@ class VideoRequestController extends ApiController
 
     /**
      * @IsGranted({"ROLE_API"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="Returns the newly created video request",
+     *     @Model(type=VideoRequest::class, groups={"api"})
+     * )
+     * @SWG\Parameter(
+     *     name="form",
+     *     in="body",
+     *     description="The form used for this request",
+     *     @Model(type=VideoRequestType::class)
+     * )
      * @Route("/requests", name="api.video_request.new", methods={"POST"})
      */
     public function new(Request $request, FormFactoryInterface $formFactory, EntityManagerInterface $em): Response
