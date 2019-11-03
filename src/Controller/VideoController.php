@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Client\RedisClient;
 use App\Entity\Video;
 use Aws\S3\S3Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/video/{id}/download", name="video.download", methods={"GET"})
      */
-    public function download(Video $video, S3Client $client, string $s3BucketName, ?string $assetsCdn = null): Response
+    public function download(Video $video, S3Client $client, string $s3BucketName, RedisClient $redis, ?string $assetsCdn = null): Response
     {
         if ($video->getPath() && $video->getFilename() && $video->getMimeType()) {
             $disposition = HeaderUtils::makeDisposition(
@@ -35,6 +36,8 @@ class VideoController extends AbstractController
             ]);
 
             $request = $client->createPresignedRequest($command, '+1 hour');
+            $redis->incrementVideoDownloads($video);
+
             return new RedirectResponse(
                 $assetsCdn ?
                     $assetsCdn . $request->getRequestTarget() :
