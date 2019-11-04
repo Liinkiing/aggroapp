@@ -4,6 +4,7 @@
     <div id="root"></div>
 {% endblock %}
 {% block javascripts %}
+    {% include 'partials/_translations.html.twig' %}
     {{ parent() }}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}

@@ -11,6 +11,7 @@ use App\Repository\VideoRequestRepository;
 use App\Serializer\FormErrorsSerializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -37,6 +38,7 @@ class VideoRequestController extends ApiController
 
     /**
      * @Route("/requests", name="api.video_request.index", methods={"GET"})
+     * @Operation(operationId="video.requests")
      * @SWG\Response(
      *     response=200,
      *     description="Returns the video requests that has been made",
@@ -69,6 +71,7 @@ class VideoRequestController extends ApiController
      *     description="Returns a video request",
      *     @Model(type=VideoRequest::class, groups={"api"})
      * )
+     * @Operation(operationId="video.request")
      * @Route("/request/{id}", name="api.video_request.show", methods={"GET"})
      */
     public function show(VideoRequest $videoRequest): Response
@@ -91,6 +94,7 @@ class VideoRequestController extends ApiController
      *     description="The form used for this request",
      *     @Model(type=VideoRequestType::class)
      * )
+     * @Operation(operationId="new.video.request")
      * @Route("/requests", name="api.video_request.new", methods={"POST"})
      */
     public function new(Request $request, FormFactoryInterface $formFactory, EntityManagerInterface $em): Response

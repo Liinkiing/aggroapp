@@ -37,14 +37,11 @@ const App: React.FC = () => (
                 <Link to="/about">About</Link>
             </li>
         </ul>
-        <React.Suspense fallback={<div>Loading...</div>}>
-            <FramerRouter>
-                <Route component={HomeView} path="/"/>
-                <Route component={AboutView} path="/about"/>
-                <Route component={NotFoundView} default/>
-            </FramerRouter>
-        </React.Suspense>
-
+        <FramerRouter>
+            <Route component={HomeView} path="/"/>
+            <Route component={AboutView} path="/about"/>
+            <Route component={NotFoundView} default/>
+        </FramerRouter>
     </div>
 )
 

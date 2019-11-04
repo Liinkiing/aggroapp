@@ -49,6 +49,7 @@ Encore
     // enables @babel/preset-env polyfills
     .configureBabel(babel => {
         babel.plugins.push('styled-components')
+        babel.plugins.push('@babel/proposal-class-properties')
     }, {
         useBuiltIns: 'usage',
         corejs: 3

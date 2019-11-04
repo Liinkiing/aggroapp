@@ -1,5 +1,6 @@
 {
     "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
         "@babel/preset-react": "^7.0.0",
         "@symfony/webpack-encore": "^0.28.0",
         "core-js": "^3.0.0",
@@ -11,7 +12,6 @@
     },
     "private": true,
     "scripts": {
-        "postinstall": "yarn build",
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
@@ -28,8 +28,9 @@
         "polished": "^3.4.1",
         "react": "^0.0.0-experimental-f6b8d31a7",
         "react-dom": "^0.0.0-experimental-f6b8d31a7",
-        "react-hooks-fetch": "^0.11.0-experimental.3",
+        "react-hooks-fetch": "^0.11.0-experimental.8",
         "react-intl": "^3.4.0",
-        "styled-components": "^4.4.0"
+        "styled-components": "^4.4.0",
+        "swr": "^0.1.5"
     }
 }
