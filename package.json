@@ -26,7 +26,7 @@
         "bazinga-translator": "^2.6.6",
         "framer-motion": "^1.6.14",
         "polished": "^3.4.1",
-        "react": "^0.0.0-experimental-f6b8d31a7",
+        "react": "^0.14.0",
         "react-dom": "^0.0.0-experimental-f6b8d31a7",
         "react-hooks-fetch": "^0.11.0-experimental.8",
         "react-intl": "^3.4.0",
